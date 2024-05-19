@@ -6,7 +6,8 @@ I'm new to C programming, and I've decided to share my learning progressing.
 Please be forgiving if there are mistakes, feel free to correct me to help me gain new knowledge.
 (obviously for purprose only)  
 
-#
+## socket()
+
 `socket()` is a syscall dependent on the `<sys/socket.h>` library. To understand its functioning, we need to understand the struct components that compose it.
 
 ## struct sockaddr_in  
@@ -19,11 +20,11 @@ Defining the variable `server_addr` of type `struct sockaddr_in` serves to repre
 
 ```c
 struct sockaddr_in {
-   uint8_t         sin_len;       // longueur totale      
-   sa_family_t     sin_family;    // famille : AF_INET    
-   in_port_t       sin_port;      // le numéro de port  
-   struct in_addr  sin_addr;      // l'adresse internet  
-   unsigned char   sin_zero[8];   // un champ de 8 zéros  
+   uint8_t         sin_len;       // total length
+   sa_family_t     sin_family;    // ip family (AF_INET)
+   in_port_t       sin_port;      // port number
+   struct in_addr  sin_addr;      // address
+   unsigned char   sin_zero[8];   // reserved
 ```  
 
 Here are all the variables defined within the struct `sockaddr_in`.  
@@ -54,13 +55,13 @@ We learn from the function prototype in its man page that `connect()` expects th
 ## dup2()  
 
 ```c
-    dup2(sockfd, 0);
-    dup2(sockfd, 1);
-    dup2(sockfd, 2);
+dup2(sockfd, 0);
+dup2(sockfd, 1);
+dup2(sockfd, 2);
 ```
 
 `dup2()` duplicates an existing file descriptor to another file descriptor. It takes the parent file descriptor and the child file descriptor as arguments.  
-`stdin` (0), `stdout` (1), and std`err (2) are redirected to the file descriptor of `sockfd`.  
+`stdin` (0), `stdout` (1), and `stderr` (2) are redirected to the file descriptor of `sockfd`.  
 In essence, any input retrieved from `stdin` will be read from the `socket`, and any output written to `stdout` and `stderr` will be sent to the server via the network connection.  
 
 ## execve()
